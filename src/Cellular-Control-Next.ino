@@ -15,6 +15,8 @@
     The mode will be set and recoded in the controlRegisterAddr so resets will not change the mode
     Control Register - bits 7-4, 3 - Verbose Mode, 2- Solar Power Mode, 1 - Pumping, 0 - Low Power Mode
     We won't use Solar or Low Power modes at this time but will keep control register structure
+
+    v0.70 - Updated to deviceOS@2.3.0 in anticipation of switching to Electron LTEs
 */
 
 // Easy place to change global numbers
@@ -35,7 +37,7 @@ namespace FRAM {                                    // Moved to namespace instea
 };
 
 const int versionNumber = 9;                        // Increment this number each time the memory map is changed
-const char releaseNumber[6] = "0.63";               // Displays the release on the menu
+const char releaseNumber[6] = "0.70";               // Displays the release on the menu
 
 
 // Included Libraries
@@ -219,7 +221,7 @@ void loop()
         Particle.syncTime();                                      // This is needed since these devices never disconnect
       }
     }
-    if (stateOfCharge <= lowBattLimit) LOW_BATTERY_STATE;         // The battery is low - sleep
+    if (stateOfCharge <= lowBattLimit) state = LOW_BATTERY_STATE;         // The battery is low - sleep
     break;
 
   case PUMPING_STATE:
@@ -329,13 +331,20 @@ void UbidotsHandler(const char *event, const char *data)  // Looks at the respon
   else Particle.publish("Ubidots Hook", data);             // Publish the response code
 }
 
+void getSignalStrength() {
+  const char* radioTech[10] = {"Unknown","None","WiFi","GSM","UMTS","CDMA","LTE","IEEE802154","LTE_CAT_M1","LTE_CAT_NB1"};
+  // New Signal Strength capability - https://community.particle.io/t/boron-lte-and-cellular-rssi-funny-values/45299/8
+  CellularSignal sig = Cellular.RSSI();
 
-void getSignalStrength()
-{
-    CellularSignal sig = Cellular.RSSI();  // Prototype for Cellular Signal Montoring
-    int rssi = sig.rssi;
-    int strength = map(rssi, -131, -51, 0, 5);
-    snprintf(SignalString,17, "%s: %d", levels[strength], rssi);
+  auto rat = sig.getAccessTechnology();
+
+  //float strengthVal = sig.getStrengthValue();
+  float strengthPercentage = sig.getStrength();
+
+  //float qualityVal = sig.getQualityValue();
+  float qualityPercentage = sig.getQuality();
+
+  snprintf(SignalString,sizeof(SignalString), "%s S:%2.0f%%, Q:%2.0f%% ", radioTech[rat], strengthPercentage, qualityPercentage);
 }
 
 // Here is were we will put the timer and other ISRs
@@ -526,10 +535,20 @@ int setTimeZone(String command)
 }
 
 bool getLostPower() {
-	// Bit 2 (mask 0x4) == PG_STAT. If non-zero, power is good but we want to return 1 if power is lost.
-	// This means we're powered off USB or VIN, so we don't know for sure if there's a battery
-	byte systemStatus = power.getSystemStatus();
-	return ((systemStatus & 0x04) == 0);
+  // CONSTANTS
+  typedef enum {
+      POWER_SOURCE_UNKNOWN = 0,
+      POWER_SOURCE_VIN = 1,
+      POWER_SOURCE_USB_HOST = 2,
+      POWER_SOURCE_USB_ADAPTER = 3,
+      POWER_SOURCE_USB_OTG = 4,
+      POWER_SOURCE_BATTERY = 5
+  } power_source_t;
+
+  int powerSource = System.powerSource();
+
+  if (powerSource == POWER_SOURCE_VIN) return 0;        // Return false if power is good
+  else return 1;                                        // Return true otherwise 
 }
 
 bool meterParticlePublish(void)
