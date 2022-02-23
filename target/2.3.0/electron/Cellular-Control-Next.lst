@@ -19,23 +19,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   7 .module_info_crc 00000004  080849f4  080849f4  000349f4  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .debug_info   00140979  00000000  00000000  000349f8  2**0
+  8 .debug_info   0014097a  00000000  00000000  000349f8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_abbrev 0001707d  00000000  00000000  00175371  2**0
+  9 .debug_abbrev 0001707d  00000000  00000000  00175372  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_aranges 00002728  00000000  00000000  0018c3ee  2**0
+ 10 .debug_aranges 00002728  00000000  00000000  0018c3ef  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00006338  00000000  00000000  0018eb16  2**0
+ 11 .debug_ranges 00006338  00000000  00000000  0018eb17  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_macro  00029e10  00000000  00000000  00194e4e  2**0
+ 12 .debug_macro  00029e10  00000000  00000000  00194e4f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_line   00034414  00000000  00000000  001bec5e  2**0
+ 13 .debug_line   00034411  00000000  00000000  001bec5f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_str    000b71cc  00000000  00000000  001f3072  2**0
+ 14 .debug_str    000b71cc  00000000  00000000  001f3070  2**0
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_frame  00006938  00000000  00000000  002aa240  2**2
+ 15 .debug_frame  00006938  00000000  00000000  002aa23c  2**2
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_loc    0001f6e3  00000000  00000000  002b0b78  2**0
+ 16 .debug_loc    0001f6e3  00000000  00000000  002b0b74  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -10112,7 +10112,7 @@ const IPAddress INADDR_NONE(0, 0, 0, 0);
  8084608:	4370 0808 437b 0808 4386 0808               pC..{C...C..
 
 08084614 <_ZL13releaseNumber>:
- 8084614:	2e30 3336 0000 0000                         0.63....
+ 8084614:	2e30 3037 0000 0000                         0.70....
 
 0808461c <_ZTVN5spark13CellularClassE>:
 	...

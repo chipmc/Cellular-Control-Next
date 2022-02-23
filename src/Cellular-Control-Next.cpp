@@ -21,6 +21,8 @@
     The mode will be set and recoded in the controlRegisterAddr so resets will not change the mode
     Control Register - bits 7-4, 3 - Verbose Mode, 2- Solar Power Mode, 1 - Pumping, 0 - Low Power Mode
     We won't use Solar or Low Power modes at this time but will keep control register structure
+
+    v0.70 - Updated to deviceOS@2.3.0 in anticipation of switching to Electron LTEs
 */
 
 // Easy place to change global numbers
@@ -47,7 +49,7 @@ bool getLostPower();
 bool meterParticlePublish(void);
 bool meterSampleRate(void);
 void fullModemReset();
-#line 22 "/Users/chipmc/Documents/Maker/Particle/Projects/Cellular-Control-Next/src/Cellular-Control-Next.ino"
+#line 24 "/Users/chipmc/Documents/Maker/Particle/Projects/Cellular-Control-Next/src/Cellular-Control-Next.ino"
 namespace FRAM {                                    // Moved to namespace instead of #define to limit scope
   enum Addresses {
     versionAddr           = 0x0,                    // Where we store the memory map version number
@@ -64,7 +66,7 @@ namespace FRAM {                                    // Moved to namespace instea
 };
 
 const int versionNumber = 9;                        // Increment this number each time the memory map is changed
-const char releaseNumber[6] = "0.63";               // Displays the release on the menu
+const char releaseNumber[6] = "0.70";               // Displays the release on the menu
 
 
 // Included Libraries
